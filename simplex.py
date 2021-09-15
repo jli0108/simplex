@@ -1,5 +1,5 @@
 import numpy as np
-
+import sys
 # -- Solve your LP problems with this simple code!!! -----
 # -- Your LP must be in the following format: ------------
 # -- Maximize c^T x --------------------------------------
@@ -14,6 +14,8 @@ A_B = np.array([[1, 3, 2],
 b = np.array([[120],
               [120]])
 
+if b.min() < 0:
+    sys.exit("Initial feasibility problem. Not implemented yet.")
 m, n = A_B.shape
 A_N = np.eye(m)
 
@@ -34,7 +36,7 @@ entering_variable = None
 for i in range(n+m):
     if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
         entering_variable = i
-print("entering:", entering_variable)
+#print("entering:", entering_variable)
 while entering_variable is not None:
     # find smallest nonnegative coefficient to determine leaving variable
     constraints = tableau[1:m+1,-1] / tableau[1:,entering_variable]
