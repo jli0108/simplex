@@ -3,7 +3,7 @@
 Simple Implementation of Simplex Method using Tableaus
 
 ## Notes
-This implementation assumes you want to solve a maximization problem in canonical form.
+This implementation assumes you want to solve a [maximization problem in canonical form](https://en.wikipedia.org/wiki/Linear_programming).
 
 That is, you want to maximize c^T x subject to the constraints Ax <= b and x >= 0.
 
