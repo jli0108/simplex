@@ -3,17 +3,19 @@
 Simple Implementation of Simplex Method using Tableaus
 
 ## Notes
-This implementation assumes you want to solve a maximization problem in canonical form.
+This implementation assumes you want to solve a [maximization problem in canonical form](https://en.wikipedia.org/wiki/Linear_programming).
 
-That is, you want to maximize c^T x given constraints Ax <= b and x >= 0.
+That is, you want to maximize c^T x subject to the constraints Ax <= b and x >= 0.
 
-I think the implementation avoids degeneracy, but I have not tested it.
+For now, this implementation requires an initial feasible solution.
+
+I think the implementation avoids degeneracy (because of [Bland's rule](https://en.wikipedia.org/wiki/Bland%27s_rule)) , but I have not thoroughly tested it.
 
 ## Requirements
 This implementation uses Python and requires [numpy](https://numpy.org/install/).
 
 ## Usage
-Clone the repository and change into it
+Clone the repository and change into it.
 ```
 $ git clone https://github.com/jli0108/simplex.git
 $ cd simplex
