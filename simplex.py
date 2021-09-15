@@ -21,7 +21,7 @@ def solve_canonical(c, A_B, b, maximize):
     if not maximize:
         c = -c
     tableau, basis_variables = maximize_canonical(c, A_B, b)
-    print("-- Solution --")
+    print("----- Solution -----")
     if maximize:
         print("Max value of objective function:", -tableau[0,-1])
     else:
