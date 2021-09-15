@@ -2,11 +2,13 @@ import numpy as np
 import sys
 # -- Solve your LP problems with this simple code!!! -----
 # -- Your LP must be in the following format: ------------
-# -- Maximize c^T x --------------------------------------
+# -- Maximize/Minimize c^T x -----------------------------
 # -- subject to Ax <= b ----------------------------------
 
+# -- Modify if you want to maximize or minimize ----------
+maximize = False
 # -- Modify these arrays in the correct format -----------
-c = np.array([[4, 3, 7]])
+c = np.array([[-4, -3, -7]])
 
 A_B = np.array([[1, 3, 2],
                 [2, 1, 3]])
@@ -14,9 +16,24 @@ A_B = np.array([[1, 3, 2],
 b = np.array([[120],
               [120]])
 
+def solve_canonical(c, A_B, b, maximize):
+    if not maximize:
+        c = -c
+    tableau, basis_variables = maximize_canonical(c, A_B, b)
+    print("-- Solution --")
+    if maximize:
+        print("Max value of objective function:", -tableau[0,-1])
+    else:
+        print("Min value of objective function:", tableau[0,-1])
+    for i in range(basis_variables.shape[0]):
+        print(f"x{basis_variables[i]} = {tableau[i+1,-1]}")
+    print("Set all other variables to zero.")
+
+# returns the final tableau and a list of the basis variables
 def maximize_canonical(c, A_B, b):
     if b.min() < 0:
         sys.exit("Initial feasibility problem. Not implemented yet.")
+
     m, n = A_B.shape
     A_N = np.eye(m)
 
@@ -61,14 +78,6 @@ def maximize_canonical(c, A_B, b):
             if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
                 entering_variable = i
         #print("entering:", entering_variable)
-    print_solution(tableau, basis_variables)
+    return tableau, basis_variables
 
-def print_solution(tableau, basis_variables):
-    #print("final basis variables:", basis_variables)
-    print("-- Solution --")
-    print("Max value of objective function:", -tableau[0,-1])
-    for i in range(basis_variables.shape[0]):
-        print(f"x{basis_variables[i]} = {tableau[i+1,-1]}")
-    print("Set all other variables to zero.")
-
-maximize_canonical(c, A_B, b)
+solve_canonical(c, A_B, b, maximize)
