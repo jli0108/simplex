@@ -7,7 +7,7 @@ This implementation requires the problem to be in [canonical form](https://en.wi
 
 That is, you want to maximize/minimize c^T x subject to the constraints Ax <= b and x >= 0.
 
-For now, this implementation requires an initial feasible solution.
+For now, this implementation requires an initial feasible solution at the origin.
 
 I think the implementation avoids degeneracy (because of [Bland's rule](https://en.wikipedia.org/wiki/Bland%27s_rule)) , but I have not thoroughly tested it.
 
