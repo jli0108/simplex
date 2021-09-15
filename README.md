@@ -13,7 +13,7 @@ I think the implementation avoids degeneracy (because of [Bland's rule](https://
 This implementation uses Python and requires [numpy](https://numpy.org/install/).
 
 ## Usage
-Clone the repository and change into it
+Clone the repository and change into it.
 ```
 $ git clone https://github.com/jli0108/simplex.git
 $ cd simplex
