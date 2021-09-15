@@ -10,6 +10,16 @@ That is, you want to maximize c^T x given constraints Ax <= b and x >= 0.
 I think the implementation avoids degeneracy, but I have not tested it.
 
 ## Requirements
-This implementation requires [numpy](https://numpy.org/install/).
+This implementation uses Python and requires [numpy](https://numpy.org/install/).
 
 ## Usage
+Clone the repository and change into it
+```
+$ git clone https://github.com/jli0108/simplex.git
+$ cd simplex
+```
+Modify the arrays `c`, `A_B`, and `b` in the `simplex.py` file with your favorite editor, i.e.
+```
+$ code simplex.py
+```
+Run `simplex.py` with either `python simplex.py` or `python3 simplex.py`.
