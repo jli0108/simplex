@@ -21,6 +21,7 @@ $ git clone https://github.com/jli0108/simplex.git
 $ cd simplex
 ```
 Modify `maximize` depending on whether you want to solve a maximization or minimiation problem.
+
 Modify the arrays `c`, `A_B`, and `b` in the `simplex.py` file with your favorite editor, i.e.
 ```
 $ code simplex.py
