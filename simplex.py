@@ -6,9 +6,9 @@ import sys
 # -- subject to Ax <= b ----------------------------------
 
 # -- Modify if you want to maximize or minimize ----------
-maximize = False
+maximize = True
 # -- Modify these arrays in the correct format -----------
-c = np.array([[-4, -3, -7]])
+c = np.array([[4, 3, 7]])
 
 A_B = np.array([[1, 3, 2],
                 [2, 1, 3]])
@@ -47,7 +47,8 @@ def maximize_canonical(c, A_B, b):
     # choose entering variable
     entering_variable = None
     for i in range(n+m):
-        if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
+        if tableau[0,i] > 0:
+        #if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
             entering_variable = i
     
     while entering_variable is not None:
