@@ -8,13 +8,15 @@ import sys
 # -- Modify if you want to maximize or minimize ----------
 maximize = True
 # -- Modify these arrays in the correct format -----------
-c = np.array([[4, 3, 7]])
+c = np.array([[10, -57, -9, -24]])
 
-A_B = np.array([[1, 3, 2],
-                [2, 1, 3]])
+A_B = np.array([[0.5, -5.5, -2.5, 9],
+                [0.5, -1.5, -0.5, 1],
+                [1, 0, 0, 0]])
 
-b = np.array([[120],
-              [120]])
+b = np.array([[0],
+              [0],
+              [1]])
 
 # solves problem in canonical form
 def solve_canonical(c, A_B, b, maximize):
@@ -46,17 +48,24 @@ def maximize_canonical(c, A_B, b):
 
     # choose entering variable
     entering_variable = None
-    for i in range(n+m):
+    i = 0
+    while i < m+n and entering_variable is None:
         if tableau[0,i] > 0:
         #if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
             entering_variable = i
-    
+        i = i + 1
+    print(tableau)
     while entering_variable is not None:
         # find smallest nonnegative coefficient to determine leaving variable
-        constraints = tableau[1:m+1,-1] / tableau[1:,entering_variable]
+        with np.errstate(divide='ignore'):
+            constraints = tableau[1:m+1,-1] / tableau[1:,entering_variable]
+        print(constraints)
+            
         index_of_leaving_variable = None
-        for i in range(constraints.size):
-            if constraints[i] > 0 and (index_of_leaving_variable is None or constraints[i] < constraints[index_of_leaving_variable]):
+        
+        for i in range(tableau[1:m+1,-1].size):
+            if (tableau[i+1,entering_variable] != 0 and # make sure there is a constraint in this row
+                (constraints[i] > 0 or (constraints[i] == 0 and tableau[i+1,entering_variable] > 0)) and (index_of_leaving_variable is None or constraints[i] < constraints[index_of_leaving_variable])):
                 index_of_leaving_variable = i
         
         # variable enters the basis
@@ -69,11 +78,15 @@ def maximize_canonical(c, A_B, b):
             if i != index_of_leaving_variable + 1:
                 tableau[i,:] -= tableau[i,entering_variable] * tableau[index_of_leaving_variable+1,:]
         
+        print(tableau)
         # choose entering variable
         entering_variable = None
-        for i in range(n+m):
-            if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
+        i = 0
+        while i < m+n and entering_variable is None:
+            if tableau[0,i] > 0:
+            #if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
                 entering_variable = i
+            i = i + 1
     return tableau, basis_variables
 
 solve_canonical(c, A_B, b, maximize)
