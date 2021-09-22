@@ -9,7 +9,7 @@ That is, you want to maximize/minimize c^T x subject to the constraints Ax <= b 
 
 For now, this implementation requires an initial feasible solution at the origin.
 
-I think the implementation avoids degeneracy (because of [Bland's rule](https://en.wikipedia.org/wiki/Bland%27s_rule)) , but I have not thoroughly tested it.
+For now, this implementation avoids degeneracy (by using [Bland's rule](https://en.wikipedia.org/wiki/Bland%27s_rule)). I might later modify the implementation to choose the entering variable to be the one with the largest coefficient, then resort to Bland's rule after multiple iterations of degeneracy.
 
 ## Requirements
 This implementation uses Python and requires [numpy](https://numpy.org/install/).
