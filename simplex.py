@@ -5,24 +5,32 @@ import sys
 # -- Maximize/Minimize c^T x -----------------------------
 # -- subject to Ax <= b ----------------------------------
 
-# -- Modify if you want to maximize or minimize ----------
-maximize = True
-# -- Modify these arrays in the correct format -----------
-c = np.array([[2, 1, 1, 0, 0]])
+# -- Modify if you want to maximize or minimize -----------------------
+maximize : bool = True
+# -- Modify if your problem is in standard or canonical form ----------
+standard : bool = True
+# -- Modify these arrays in the correct format ------------------------
+c : np.ndarray = np.array([[2, 1, 1, 0, 0]])
 
-A_B = np.array([[2, 3, -1, 1, 0],
+A_B : np.ndarray = np.array([[2, 3, -1, 1, 0],
                 [0, 2, 1, 0, -1],
                 [1, 0, 1, 0, 0]])
 
-b = np.array([[9],
+b : np.ndarray = np.array([[9],
               [4],
               [6]])
 
 assert A_B.shape[0] == b.shape[0]
 assert c.shape[1] == A_B.shape[1]
 
+def solve_LP(c : np.ndarray, A_B : np.ndarray, b : np.ndarray, maximize : bool, standard : bool) -> None:
+    if standard:
+        solve_standard(c, A_B, b, maximize)
+    else:
+        solve_canonical(c, A_B, b, maximize)
+
 # solves problem in canonical form
-def solve_canonical(c, A_B, b, maximize):
+def solve_canonical(c : np.ndarray, A_B : np.ndarray, b : np.ndarray, maximize : bool) -> None:
     if not maximize:
         c = -c
     tableau, basis_variables = maximize_canonical(c, A_B, b)
@@ -234,4 +242,5 @@ def maximize_canonical(c, A_B, b):
     return tableau, basis_variables
 
 #solve_canonical(c, A_B, b, maximize)
-solve_standard(c, A_B, b, maximize)
+#solve_standard(c, A_B, b, maximize)
+solve_LP(c, A_B, b, maximize, standard)
