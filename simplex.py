@@ -10,21 +10,15 @@ maximize : bool = True
 # -- Modify if your problem is in standard or canonical form ----------
 standard : bool = True
 # -- Modify these arrays in the correct format ------------------------
-c : np.ndarray = np.array([[3, -7, -5, 0, 0, 0, 0, 0, 0]])
+c : np.ndarray = np.array([[1, 2, -4, 0, -5, 0, 0, 0]])
 
-A_B : np.ndarray = np.array([[1, -1, 1, 1, 0, 0, 0, 0, 0],
-                [0, -1, 2, 0, 1, 0, 0, 0, 0],
-                [1, 0, 1, 0, 0, 1, 0, 0, 0],
-                [-2, 1, 1, 0, 0, 0, 1, 0, 0],
-                [-1, 3, -5, 0, 0, 0, 0, 1, 0],
-                [2, -3, 2, 0, 0, 0, 0, 0, 1]])
-1, 2, 0
-b : np.ndarray = np.array([[-1],
-              [-2],
-              [4],
-              [0],
-              [5],
-              [0]])
+A_B : np.ndarray = np.array([[1, 0, 1, -2, -1, 2, 0, 0],
+                [1, 1, 0, -1, -3, 3, 1, 0],
+                [-1, -2, -1, -1, 5, -2, 0, 1]])
+
+b : np.ndarray = np.array([[3],
+              [7],
+              [5]])
 
 assert A_B.shape[0] == b.shape[0]
 assert c.shape[1] == A_B.shape[1]
@@ -53,6 +47,7 @@ def solve_standard(c, A_B, b, maximize):
     if not maximize:
         c = -c
     tableau, basis_variables = solve_phase_one(A_B, b)
+    #print(tableau)
     if tableau[0,-1] == 0:
         m = basis_variables.shape[0]
         n = tableau.shape[1] - m - 1
@@ -63,13 +58,13 @@ def solve_standard(c, A_B, b, maximize):
         for _ in range(n, n+m):
             tableau = np.delete(tableau, n, 1)
         tableau[0,0:n] = c
-        print(tableau)
+        #print(tableau)
         print("End of Phase I")
         # should rewrite objective...
-        print(basis_variables)
+        #print(basis_variables)
         for i in range(m):
             tableau[0] -= tableau[0,basis_variables[i]] * tableau[i+1]
-        print(tableau)
+        #print(tableau)
         entering_variable = None
         i = 0
         while i < n :#and entering_variable is None:
@@ -80,7 +75,7 @@ def solve_standard(c, A_B, b, maximize):
             if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
                 entering_variable = i
             i = i + 1
-        print(tableau)
+        #print(tableau)
         while entering_variable is not None:
             
             index_of_leaving_variable = None
@@ -91,6 +86,11 @@ def solve_standard(c, A_B, b, maximize):
                     # find smallest nonnegative coefficient to determine leaving variable (using multiplication for performance)
                     tableau[index_of_leaving_variable+1,entering_variable] * tableau[i+1,-1] < tableau[i+1,entering_variable] * tableau[index_of_leaving_variable+1,-1] )):
                     index_of_leaving_variable = i
+            
+            if (index_of_leaving_variable is None):
+                #print(tableau)
+                #print(basis_variables)
+                exit("Problem is unbounded")
             
             print(f"x{entering_variable+1} enters, x{basis_variables[index_of_leaving_variable]+1} leaves")
             # variable enters the basis
@@ -153,7 +153,7 @@ def solve_phase_one(A_B, b):
         if tableau[0,i] > 0 and (entering_variable is None or tableau[0,i] > tableau[0,entering_variable]):
             entering_variable = i
         i = i + 1
-    print(tableau)
+    #print(tableau)
     while entering_variable is not None:
         
         index_of_leaving_variable = None
@@ -176,7 +176,7 @@ def solve_phase_one(A_B, b):
             if i != index_of_leaving_variable + 1:
                 tableau[i,:] -= tableau[i,entering_variable] * tableau[index_of_leaving_variable+1,:]
         
-        print(tableau)
+        #print(tableau)
         # choose entering variable
         entering_variable = None
         i = 0
