@@ -10,15 +10,21 @@ maximize : bool = True
 # -- Modify if your problem is in standard or canonical form ----------
 standard : bool = True
 # -- Modify these arrays in the correct format ------------------------
-c : np.ndarray = np.array([[2, 1, 1, 0, 0]])
+c : np.ndarray = np.array([[3, -7, -5, 0, 0, 0, 0, 0, 0]])
 
-A_B : np.ndarray = np.array([[2, 3, -1, 1, 0],
-                [0, 2, 1, 0, -1],
-                [1, 0, 1, 0, 0]])
-
-b : np.ndarray = np.array([[9],
+A_B : np.ndarray = np.array([[1, -1, 1, 1, 0, 0, 0, 0, 0],
+                [0, -1, 2, 0, 1, 0, 0, 0, 0],
+                [1, 0, 1, 0, 0, 1, 0, 0, 0],
+                [-2, 1, 1, 0, 0, 0, 1, 0, 0],
+                [-1, 3, -5, 0, 0, 0, 0, 1, 0],
+                [2, -3, 2, 0, 0, 0, 0, 0, 1]])
+1, 2, 0
+b : np.ndarray = np.array([[-1],
+              [-2],
               [4],
-              [6]])
+              [0],
+              [5],
+              [0]])
 
 assert A_B.shape[0] == b.shape[0]
 assert c.shape[1] == A_B.shape[1]
@@ -116,6 +122,7 @@ def solve_standard(c, A_B, b, maximize):
             print(f"x{basis_variables[i]+1} = {tableau[i+1,-1]}")
         print("Set all other variables to zero.")
     else:
+        print(tableau[0,-1])
         print("Problem is infeasible.")
 
 # takes problem in standard form and solves phase 1 LP
@@ -125,7 +132,7 @@ def solve_phase_one(A_B, b):
     for i in range(m):
         if b[i,0] < 0:
             A_B[i] = -A_B[i]
-            b[i]
+            b[i] = -b[i]
     
     A_N = np.eye(m)
     A = np.concatenate((A_B, A_N), axis=1)
