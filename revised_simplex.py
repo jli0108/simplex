@@ -11,15 +11,17 @@ maximize : bool = True
 # -- Modify if your problem is in standard or canonical form ----------
 standard : bool = False
 # -- Modify these arrays in the correct format ------------------------
-c : np.ndarray = np.array([[0, -4, 3, 2, -8]])
+c : np.ndarray = np.array([[7, 6, 5, -2, 3]])
 
-A_B : np.ndarray = np.array([[3, 1, 2, 1, 0],
-                [-3, -1, -2, -1, 0],
-                [-1, 2, 0, -1, 1]])
+A_B : np.ndarray = np.array([[1, 3, 5, -2, 2],
+                [4, 2, -2, 1, 1],
+                [2, 4, 4, -2, 5],
+                [3, 1, 2, -1, -2]])
 
-b : np.ndarray = np.array([[3],
-              [-3],
-              [-2]])
+b : np.ndarray = np.array([[4],
+              [3],
+              [5],
+              [1]])
 
 assert A_B.shape[0] == b.shape[0]
 assert c.shape[1] == A_B.shape[1]
@@ -41,9 +43,9 @@ def solve_canonical(c : np.ndarray, A_B : np.ndarray, b : np.ndarray, maximize :
     else:
         print("Min value of objective function:", -optimal_cost)
     for i in range(basic_variables.shape[0]):
-        print(f"x{basic_variables[i]+1} = {RHS[i,0] : 0.01f}")
+        print(f"x{basic_variables[i]+1} = {RHS[i,0] : 0.7f}")
     for i in range(shadow_prices.shape[1]):
-        print(f"Shadow price of x{basic_variables[i]+1}: {shadow_prices[0,i] : 0.01f}")
+        print(f"Shadow price of x{basic_variables[i]+1}: {shadow_prices[0,i] : 0.7f}")
     for i in range(RHS.shape[0]):
         allowable_increase = None
         allowable_decrease = None
@@ -83,6 +85,7 @@ def maximize_canonical(c_N, A_N, b):
             b[i,0] *= -1
             A_B[i] *= -1
     A = np.concatenate((A_N, np.eye(m)), axis=1)
+    #print(A)
     # c_B is coefficients from original c (not getting reduced)
     c_B = np.zeros((1,m))
     c = np.concatenate((c_N, c_B), axis=1)
@@ -109,8 +112,8 @@ def maximize_canonical(c_N, A_N, b):
 
         reduced_col_of_A_N = np.dot(A_B_inv, A_N[:,index_of_entering_variable])
 
-        print(A_B_inv)
-        print(b_bar[:,0] / reduced_col_of_A_N)
+        #print(A_B_inv)
+        #print(b_bar[:,0] / reduced_col_of_A_N)
         index_of_leaving_variable = None
         for i in range(m):
             if (reduced_col_of_A_N[i] > 0 and
@@ -123,9 +126,9 @@ def maximize_canonical(c_N, A_N, b):
             sys.exit("LP is unbounded")
         entering_variable = nonbasic_variables[index_of_entering_variable]
         leaving_variable = basic_variables[index_of_leaving_variable]
-        print("basis",basic_variables+1)
-        print("nonbasic",nonbasic_variables+1)
-        print(f"x{entering_variable+1} enters, x{leaving_variable+1} leaves")
+        #print("basis",basic_variables+1)
+        #print("nonbasic",nonbasic_variables+1)
+        #print(f"x{entering_variable+1} enters, x{leaving_variable+1} leaves")
         # variable enters the basis
         basic_variables[index_of_leaving_variable] = entering_variable
         nonbasic_variables[index_of_entering_variable] = leaving_variable
