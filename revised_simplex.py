@@ -11,15 +11,15 @@ maximize : bool = True
 # -- Modify if your problem is in standard or canonical form ----------
 standard : bool = False
 # -- Modify these arrays in the correct format ------------------------
-c : np.ndarray = np.array([[90, 160, 40, 100]])
+c : np.ndarray = np.array([[0, -4, 3, 2, -8]])
 
-A_B : np.ndarray = np.array([[2, 8, 4, 2],
-                [5, 4, 8, 5],
-                [7, 8, 3, 5]])
+A_B : np.ndarray = np.array([[3, 1, 2, 1, 0],
+                [-3, -1, -2, -1, 0],
+                [-1, 2, 0, -1, 1]])
 
-b : np.ndarray = np.array([[480],
-              [800],
-              [900]])
+b : np.ndarray = np.array([[3],
+              [-3],
+              [-2]])
 
 assert A_B.shape[0] == b.shape[0]
 assert c.shape[1] == A_B.shape[1]
@@ -72,11 +72,16 @@ def solve_phase_one(A_B, b):
 # solves maximization problem in canonical form
 # returns the final tableau and a list of the basis variables
 def maximize_canonical(c_N, A_N, b):
-    if b.min() < 0:
-        sys.exit("Initial feasibility problem. Not implemented yet.")
+    #if b.min() < 0:
+    #    sys.exit("Initial feasibility problem. Not implemented yet.")
 
     m, n = A_N.shape
     A_B = np.eye(m)
+    for i in range(m):
+        if b[i] < 0:
+            A_N[i] *= -1
+            b[i,0] *= -1
+            A_B[i] *= -1
     A = np.concatenate((A_N, np.eye(m)), axis=1)
     # c_B is coefficients from original c (not getting reduced)
     c_B = np.zeros((1,m))
