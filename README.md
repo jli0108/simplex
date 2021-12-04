@@ -7,7 +7,7 @@ This implementation can be used for [canonical or standard form](https://en.wiki
 
 For now, this implementation avoids degeneracy (by using [Bland's rule](https://en.wikipedia.org/wiki/Bland%27s_rule)). I might later modify the implementation to choose the entering variable to be the one with the largest coefficient, then resort to Bland's rule after multiple iterations of degeneracy.
 
-The revised simplex method avoids tableaus but is a bit more difficult to understand.
+The revised simplex method avoids tableaus but is a bit less readable.
 
 ## Requirements
 This implementation uses Python and requires [numpy](https://numpy.org/install/).
